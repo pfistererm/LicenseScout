@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DoxiaExporter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">LicenseScout Maven Report Plugin</a> &gt; <a href="index.source.html" class="el_package">org.aposin.licensescout.report.exporter</a> &gt; <span class="el_source">DoxiaExporter.java</span></div><h1>DoxiaExporter.java</h1><pre class="source lang-java linenums">/**
+ * Copyright 2019 Association for the promotion of open-source insurance software and for the establishment of open interface standards in the insurance industry (Verein zur Förderung quelloffener Versicherungssoftware und Etablierung offener Schnittstellenstandards in der Versicherungsbranche)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.aposin.licensescout.report.exporter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.maven.doxia.sink.Sink;
+import org.aposin.licensescout.archive.Archive;
+import org.aposin.licensescout.configuration.OutputFileType;
+import org.aposin.licensescout.exporter.IReportExporter;
+import org.aposin.licensescout.exporter.OutputResult;
+import org.aposin.licensescout.exporter.ReportConfiguration;
+import org.aposin.licensescout.license.License;
+
+/**
+ * Report exporter creating a license report using the doxia framework.
+ * 
+ * @see &lt;a href=&quot;https://maven.apache.org/doxia/doxia/doxia-sink-api/&quot;&gt;Doxia Sink API&lt;/a&gt;
+ */
+public class DoxiaExporter implements IReportExporter {
+
+    private Sink sink;
+
+    /**
+     * Gets the single instance of Exporter.
+     * @param sinkProvider 
+     * 
+     * @return an exporter instance
+     */
+    public static IReportExporter getInstance(final ISinkProvider sinkProvider) {
+<span class="fc" id="L49">        return new DoxiaExporter(sinkProvider);</span>
+    }
+
+    /**
+     * Constructor.
+     * @param sinkProvider
+     */
+<span class="fc" id="L56">    private DoxiaExporter(final ISinkProvider sinkProvider) {</span>
+<span class="fc" id="L57">        this.sink = sinkProvider.getSink();</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OutputFileType getOutputFileType() {
+<span class="nc" id="L65">        return OutputFileType.DOXIA;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void export(final OutputResult outputResult, final ReportConfiguration reportConfiguration)
+            throws Exception {
+<span class="nc" id="L74">        final List&lt;Archive&gt; archiveFiles = outputResult.getFinderResult().getArchiveFiles();</span>
+        try {
+<span class="nc" id="L76">            createHeader();</span>
+
+<span class="nc" id="L78">            createBody(outputResult, reportConfiguration, archiveFiles);</span>
+<span class="nc" id="L79">            sink.flush();</span>
+        } finally {
+<span class="nc" id="L81">            sink.close();</span>
+        }
+<span class="nc" id="L83">    }</span>
+
+    /**
+     * @param sink
+     */
+    private void createHeader() {
+<span class="nc" id="L89">        sink.head();</span>
+
+<span class="nc" id="L91">        sink.title();</span>
+<span class="nc" id="L92">        sink.text(&quot;License report&quot;);</span>
+<span class="nc" id="L93">        sink.title_();</span>
+
+<span class="nc" id="L95">        sink.head_();</span>
+<span class="nc" id="L96">    }</span>
+
+    /**
+     * @param outputResult
+     * @param reportConfiguration
+     * @param archiveFiles
+     * @throws IOException
+     */
+    private void createBody(final OutputResult outputResult, final ReportConfiguration reportConfiguration,
+                            final List&lt;Archive&gt; archiveFiles)
+            throws IOException {
+<span class="nc" id="L107">        sink.body();</span>
+
+<span class="nc" id="L109">        sink.paragraph();</span>
+<span class="nc" id="L110">        sink.text(&quot;Report with licenses found on libraries.&quot;);</span>
+<span class="nc" id="L111">        sink.paragraph_();</span>
+
+<span class="nc" id="L113">        sink.paragraph();</span>
+<span class="nc" id="L114">        sink.text(&quot;Scanned directory: &quot; + outputResult.getFinderResult().getScanDirectory());</span>
+<span class="nc" id="L115">        sink.paragraph_();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (!outputResult.isPomResolutionUsed()) {</span>
+<span class="nc" id="L117">            sink.paragraph();</span>
+<span class="nc" id="L118">            sink.text(&quot;Parent POm resolution was not active. Results may be incomplete.&quot;);</span>
+<span class="nc" id="L119">            sink.paragraph_();</span>
+        }
+
+        //        sink.section1();
+        //        sink.sectionTitle1();
+        //        sink.text(&quot;Section title&quot;);
+        //        sink.sectionTitle1_();
+
+<span class="nc" id="L127">        sink.section1_();</span>
+
+<span class="nc" id="L129">        sink.table();</span>
+<span class="nc" id="L130">        createTableHeader(outputResult, reportConfiguration);</span>
+<span class="nc" id="L131">        Collections.sort(archiveFiles);</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        for (final Archive archive : archiveFiles) {</span>
+<span class="nc" id="L134">            createTableRow(archive, reportConfiguration);</span>
+<span class="nc" id="L135">        }</span>
+<span class="nc" id="L136">        sink.table_();</span>
+<span class="nc" id="L137">        sink.body_();</span>
+<span class="nc" id="L138">    }</span>
+
+    private void createTableHeader(final OutputResult outputResult, final ReportConfiguration reportConfiguration) {
+<span class="nc" id="L141">        sink.tableRow();</span>
+<span class="nc" id="L142">        createTableHeaderCell(sink, &quot;Type&quot;);</span>
+<span class="nc" id="L143">        createTableHeaderCell(sink, &quot;Filename&quot;);</span>
+<span class="nc" id="L144">        createTableHeaderCell(sink, &quot;Version&quot;);</span>
+<span class="nc" id="L145">        createTableHeaderCell(sink, &quot;Detection status&quot;);</span>
+<span class="nc" id="L146">        createTableHeaderCell(sink, &quot;Legal status&quot;);</span>
+<span class="nc" id="L147">        createTableHeaderCell(sink, &quot;Archive path&quot;);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (reportConfiguration.isShowDocumentationUrl()) {</span>
+<span class="nc" id="L149">            createTableHeaderCell(sink, &quot;Documentation&quot;);</span>
+        }
+<span class="nc" id="L151">        createTableHeaderCell(sink, &quot;Licenses&quot;);</span>
+<span class="nc" id="L152">        createTableHeaderCell(sink, &quot;Message Digest (&quot; + outputResult.getMessageDigestAlgorithm() + &quot;)&quot;);</span>
+<span class="nc" id="L153">        sink.tableRow_();</span>
+<span class="nc" id="L154">    }</span>
+
+    private void createTableRow(final Archive archive, final ReportConfiguration reportConfiguration) {
+<span class="nc" id="L157">        sink.tableRow();</span>
+
+<span class="nc" id="L159">        createTableCell(archive.getArchiveType().toString());</span>
+<span class="nc" id="L160">        createTableCell(archive.getFileName());</span>
+<span class="nc" id="L161">        createTableCell(archive.getVersion());</span>
+<span class="nc" id="L162">        createTableCell(archive.getDetectionStatus().name());</span>
+<span class="nc" id="L163">        createTableCell(archive.getLegalStatus().name());</span>
+<span class="nc" id="L164">        createTableCell(archive.getPath());</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (reportConfiguration.isShowDocumentationUrl()) {</span>
+<span class="nc" id="L166">            final String documentationUrl = archive.getDocumentationUrl();</span>
+<span class="nc" id="L167">            createTableCell(documentationUrl);</span>
+        }
+<span class="nc" id="L169">        final Set&lt;License&gt; licensesSet = archive.getLicenses();</span>
+<span class="nc" id="L170">        sink.tableCell();</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (!licensesSet.isEmpty()) {</span>
+            // sort by SPDX identifier so that we get a unique order for archives that appear multiple times
+<span class="nc" id="L173">            final List&lt;License&gt; licensesList = new ArrayList&lt;&gt;(licensesSet);</span>
+<span class="nc" id="L174">            Collections.sort(licensesList, new Comparator&lt;License&gt;() { // NOSONAR</span>
+
+                /** {@inheritDoc} */
+                @Override
+                public int compare(final License o1, final License o2) {
+<span class="nc" id="L179">                    return o1.getSpdxIdentifier().compareTo(o2.getSpdxIdentifier());</span>
+                }
+            });
+<span class="nc" id="L182">            sink.list();</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            for (final License license : licensesList) {</span>
+<span class="nc" id="L184">                sink.listItem();</span>
+<span class="nc" id="L185">                sink.text(license.getSpdxIdentifier());</span>
+<span class="nc" id="L186">                sink.listItem_();</span>
+<span class="nc" id="L187">            }</span>
+<span class="nc" id="L188">            sink.list_();</span>
+        }
+<span class="nc" id="L190">        sink.tableCell_();</span>
+<span class="nc" id="L191">        createTableCell(archive.getMessageDigestString());</span>
+<span class="nc" id="L192">        sink.tableRow_();</span>
+<span class="nc" id="L193">    }</span>
+
+    /**
+     * @param sink
+     * @param text
+     */
+    private void createTableHeaderCell(final Sink sink, String text) {
+<span class="nc" id="L200">        sink.tableHeaderCell();</span>
+<span class="nc" id="L201">        sink.text(text);</span>
+<span class="nc" id="L202">        sink.tableHeaderCell_();</span>
+<span class="nc" id="L203">    }</span>
+
+    /**
+     * @param text
+     */
+    private void createTableCell(String text) {
+<span class="nc" id="L209">        sink.tableCell();</span>
+<span class="nc" id="L210">        sink.text(text);</span>
+<span class="nc" id="L211">        sink.tableCell_();</span>
+<span class="nc" id="L212">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
