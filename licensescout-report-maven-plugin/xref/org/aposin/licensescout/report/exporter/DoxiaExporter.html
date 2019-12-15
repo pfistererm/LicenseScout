@@ -48,7 +48,7 @@
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">private</strong> Sink sink;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment">     * Gets the single instance of Exporter.</em>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment">     * Gets an instance of Exporter.</em>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment">     * @param sinkProvider </em>
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment">     * </em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment">     * @return an exporter instance</em>
@@ -123,103 +123,95 @@
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         sink.paragraph_();
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">if</strong> (!outputResult.isPomResolutionUsed()) {
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>             sink.paragraph();
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>             sink.text(<span class="jxr_string">"Parent POm resolution was not active. Results may be incomplete."</span>);
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>             sink.text(<span class="jxr_string">"Parent POM resolution was not active. Results may be incomplete."</span>);
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>             sink.paragraph_();
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         }
 <a class="jxr_linenumber" name="L121" href="#L121">121</a> 
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>         <em class="jxr_comment">//        sink.section1();</em>
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>         <em class="jxr_comment">//        sink.sectionTitle1();</em>
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>         <em class="jxr_comment">//        sink.text("Section title");</em>
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         <em class="jxr_comment">//        sink.sectionTitle1_();</em>
-<a class="jxr_linenumber" name="L126" href="#L126">126</a> 
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         sink.section1_();
-<a class="jxr_linenumber" name="L128" href="#L128">128</a> 
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>         sink.table();
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         createTableHeader(outputResult, reportConfiguration);
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         Collections.sort(archiveFiles);
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         sink.table();
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         createTableHeader(outputResult, reportConfiguration);
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         Collections.sort(archiveFiles);
+<a class="jxr_linenumber" name="L125" href="#L125">125</a> 
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Archive archive : archiveFiles) {
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>             createTableRow(archive, reportConfiguration);
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         }
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         sink.table_();
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         sink.body_();
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>     }
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> 
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Archive archive : archiveFiles) {
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>             createTableRow(archive, reportConfiguration);
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         }
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         sink.table_();
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>         sink.body_();
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>     }
-<a class="jxr_linenumber" name="L139" href="#L139">139</a> 
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createTableHeader(<strong class="jxr_keyword">final</strong> OutputResult outputResult, <strong class="jxr_keyword">final</strong> ReportConfiguration reportConfiguration) {
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         sink.tableRow();
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         createTableHeaderCell(sink, <span class="jxr_string">"Type"</span>);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         createTableHeaderCell(sink, <span class="jxr_string">"Filename"</span>);
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         createTableHeaderCell(sink, <span class="jxr_string">"Version"</span>);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>         createTableHeaderCell(sink, <span class="jxr_string">"Detection status"</span>);
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>         createTableHeaderCell(sink, <span class="jxr_string">"Legal status"</span>);
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>         createTableHeaderCell(sink, <span class="jxr_string">"Archive path"</span>);
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>         <strong class="jxr_keyword">if</strong> (reportConfiguration.isShowDocumentationUrl()) {
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>             createTableHeaderCell(sink, <span class="jxr_string">"Documentation"</span>);
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         }
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         createTableHeaderCell(sink, <span class="jxr_string">"Licenses"</span>);
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>         createTableHeaderCell(sink, <span class="jxr_string">"Message Digest ("</span> + outputResult.getMessageDigestAlgorithm() + <span class="jxr_string">")"</span>);
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         sink.tableRow_();
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>     }
-<a class="jxr_linenumber" name="L155" href="#L155">155</a> 
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createTableRow(<strong class="jxr_keyword">final</strong> Archive archive, <strong class="jxr_keyword">final</strong> ReportConfiguration reportConfiguration) {
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         sink.tableRow();
-<a class="jxr_linenumber" name="L158" href="#L158">158</a> 
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         createTableCell(archive.getArchiveType().toString());
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         createTableCell(archive.getFileName());
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>         createTableCell(archive.getVersion());
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>         createTableCell(archive.getDetectionStatus().name());
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         createTableCell(archive.getLegalStatus().name());
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>         createTableCell(archive.getPath());
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         <strong class="jxr_keyword">if</strong> (reportConfiguration.isShowDocumentationUrl()) {
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>             <strong class="jxr_keyword">final</strong> String documentationUrl = archive.getDocumentationUrl();
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>             createTableCell(documentationUrl);
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         }
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">final</strong> Set&lt;License&gt; licensesSet = archive.getLicenses();
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         sink.tableCell();
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>         <strong class="jxr_keyword">if</strong> (!licensesSet.isEmpty()) {
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>             <em class="jxr_comment">// sort by SPDX identifier so that we get a unique order for archives that appear multiple times</em>
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>             <strong class="jxr_keyword">final</strong> List&lt;License&gt; licensesList = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(licensesSet);
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>             Collections.sort(licensesList, <strong class="jxr_keyword">new</strong> Comparator&lt;License&gt;() { <em class="jxr_comment">// NOSONAR</em>
-<a class="jxr_linenumber" name="L175" href="#L175">175</a> 
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>                 <em class="jxr_javadoccomment">/** {@inheritDoc} */</em>
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>                 @Override
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<strong class="jxr_keyword">final</strong> License o1, <strong class="jxr_keyword">final</strong> License o2) {
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>                     <strong class="jxr_keyword">return</strong> o1.getSpdxIdentifier().compareTo(o2.getSpdxIdentifier());
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 }
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>             });
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>             sink.list();
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> License license : licensesList) {
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>                 sink.listItem();
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>                 sink.text(license.getSpdxIdentifier());
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>                 sink.listItem_();
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>             }
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>             sink.list_();
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         }
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         sink.tableCell_();
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         createTableCell(archive.getMessageDigestString());
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>         sink.tableRow_();
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>     }
-<a class="jxr_linenumber" name="L194" href="#L194">194</a> 
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">     * @param sink</em>
-<a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">     * @param text</em>
-<a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createTableHeaderCell(<strong class="jxr_keyword">final</strong> Sink sink, String text) {
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         sink.tableHeaderCell();
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         sink.text(text);
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         sink.tableHeaderCell_();
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>     }
-<a class="jxr_linenumber" name="L204" href="#L204">204</a> 
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L206" href="#L206">206</a> <em class="jxr_javadoccomment">     * @param text</em>
-<a class="jxr_linenumber" name="L207" href="#L207">207</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createTableCell(String text) {
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>         sink.tableCell();
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>         sink.text(text);
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>         sink.tableCell_();
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>     }
-<a class="jxr_linenumber" name="L213" href="#L213">213</a> 
-<a class="jxr_linenumber" name="L214" href="#L214">214</a> }
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createTableHeader(<strong class="jxr_keyword">final</strong> OutputResult outputResult, <strong class="jxr_keyword">final</strong> ReportConfiguration reportConfiguration) {
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>         sink.tableRow();
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         createTableHeaderCell(<span class="jxr_string">"Type"</span>);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         createTableHeaderCell(<span class="jxr_string">"Filename"</span>);
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         createTableHeaderCell(<span class="jxr_string">"Version"</span>);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         createTableHeaderCell(<span class="jxr_string">"Detection status"</span>);
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         createTableHeaderCell(<span class="jxr_string">"Legal status"</span>);
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         createTableHeaderCell(<span class="jxr_string">"Archive path"</span>);
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         <strong class="jxr_keyword">if</strong> (reportConfiguration.isShowDocumentationUrl()) {
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>             createTableHeaderCell(<span class="jxr_string">"Documentation"</span>);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         }
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         createTableHeaderCell(<span class="jxr_string">"Licenses"</span>);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         createTableHeaderCell(<span class="jxr_string">"Message Digest ("</span> + outputResult.getMessageDigestAlgorithm() + <span class="jxr_string">")"</span>);
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         sink.tableRow_();
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>     }
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> 
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createTableRow(<strong class="jxr_keyword">final</strong> Archive archive, <strong class="jxr_keyword">final</strong> ReportConfiguration reportConfiguration) {
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>         sink.tableRow();
+<a class="jxr_linenumber" name="L151" href="#L151">151</a> 
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>         createTableCell(archive.getArchiveType().toString());
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         createTableCell(archive.getFileName());
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>         createTableCell(archive.getVersion());
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>         createTableCell(archive.getDetectionStatus().name());
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         createTableCell(archive.getLegalStatus().name());
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         createTableCell(archive.getPath());
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>         <strong class="jxr_keyword">if</strong> (reportConfiguration.isShowDocumentationUrl()) {
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>             <strong class="jxr_keyword">final</strong> String documentationUrl = archive.getDocumentationUrl();
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>             createTableCell(documentationUrl);
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         }
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         <strong class="jxr_keyword">final</strong> Set&lt;License&gt; licensesSet = archive.getLicenses();
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         sink.tableCell();
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         <strong class="jxr_keyword">if</strong> (!licensesSet.isEmpty()) {
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>             <em class="jxr_comment">// sort by SPDX identifier so that we get a unique order for archives that appear multiple times</em>
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>             <strong class="jxr_keyword">final</strong> List&lt;License&gt; licensesList = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(licensesSet);
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>             Collections.sort(licensesList, <strong class="jxr_keyword">new</strong> Comparator&lt;License&gt;() { <em class="jxr_comment">// NOSONAR</em>
+<a class="jxr_linenumber" name="L168" href="#L168">168</a> 
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>                 <em class="jxr_javadoccomment">/** {@inheritDoc} */</em>
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>                 @Override
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<strong class="jxr_keyword">final</strong> License o1, <strong class="jxr_keyword">final</strong> License o2) {
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>                     <strong class="jxr_keyword">return</strong> o1.getSpdxIdentifier().compareTo(o2.getSpdxIdentifier());
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>                 }
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>             });
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>             sink.list();
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> License license : licensesList) {
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>                 sink.listItem();
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>                 sink.text(license.getSpdxIdentifier());
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 sink.listItem_();
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>             }
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>             sink.list_();
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>         }
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>         sink.tableCell_();
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>         createTableCell(archive.getMessageDigestString());
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         sink.tableRow_();
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>     }
+<a class="jxr_linenumber" name="L187" href="#L187">187</a> 
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_javadoccomment">     * @param text</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createTableHeaderCell(String text) {
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         sink.tableHeaderCell();
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         sink.text(text);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         sink.tableHeaderCell_();
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>     }
+<a class="jxr_linenumber" name="L196" href="#L196">196</a> 
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">     * @param text</em>
+<a class="jxr_linenumber" name="L199" href="#L199">199</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createTableCell(String text) {
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         sink.tableCell();
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         sink.text(text);
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         sink.tableCell_();
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>     }
+<a class="jxr_linenumber" name="L205" href="#L205">205</a> 
+<a class="jxr_linenumber" name="L206" href="#L206">206</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2019 <a href="http://www.aposin.org">Association for the promotion of open-source insurance software and for the establishment of open interface standards in the insurance industry (Verein zur Förderung quelloffener Versicherungssoftware und Etablierung offener Schnittstellenstandards in der Versicherungsbranche)</a>. All rights reserved.</div>

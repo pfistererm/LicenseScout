@@ -40,7 +40,7 @@ public class DoxiaExporter implements IReportExporter {
     private Sink sink;
 
     /**
-     * Gets the single instance of Exporter.
+     * Gets an instance of Exporter.
      * @param sinkProvider 
      * 
      * @return an exporter instance
@@ -115,101 +115,93 @@ public class DoxiaExporter implements IReportExporter {
 <span class="nc" id="L115">        sink.paragraph_();</span>
 <span class="nc bnc" id="L116" title="All 2 branches missed.">        if (!outputResult.isPomResolutionUsed()) {</span>
 <span class="nc" id="L117">            sink.paragraph();</span>
-<span class="nc" id="L118">            sink.text(&quot;Parent POm resolution was not active. Results may be incomplete.&quot;);</span>
+<span class="nc" id="L118">            sink.text(&quot;Parent POM resolution was not active. Results may be incomplete.&quot;);</span>
 <span class="nc" id="L119">            sink.paragraph_();</span>
         }
 
-        //        sink.section1();
-        //        sink.sectionTitle1();
-        //        sink.text(&quot;Section title&quot;);
-        //        sink.sectionTitle1_();
+<span class="nc" id="L122">        sink.table();</span>
+<span class="nc" id="L123">        createTableHeader(outputResult, reportConfiguration);</span>
+<span class="nc" id="L124">        Collections.sort(archiveFiles);</span>
 
-<span class="nc" id="L127">        sink.section1_();</span>
-
-<span class="nc" id="L129">        sink.table();</span>
-<span class="nc" id="L130">        createTableHeader(outputResult, reportConfiguration);</span>
-<span class="nc" id="L131">        Collections.sort(archiveFiles);</span>
-
-<span class="nc bnc" id="L133" title="All 2 branches missed.">        for (final Archive archive : archiveFiles) {</span>
-<span class="nc" id="L134">            createTableRow(archive, reportConfiguration);</span>
-<span class="nc" id="L135">        }</span>
-<span class="nc" id="L136">        sink.table_();</span>
-<span class="nc" id="L137">        sink.body_();</span>
-<span class="nc" id="L138">    }</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        for (final Archive archive : archiveFiles) {</span>
+<span class="nc" id="L127">            createTableRow(archive, reportConfiguration);</span>
+<span class="nc" id="L128">        }</span>
+<span class="nc" id="L129">        sink.table_();</span>
+<span class="nc" id="L130">        sink.body_();</span>
+<span class="nc" id="L131">    }</span>
 
     private void createTableHeader(final OutputResult outputResult, final ReportConfiguration reportConfiguration) {
-<span class="nc" id="L141">        sink.tableRow();</span>
-<span class="nc" id="L142">        createTableHeaderCell(sink, &quot;Type&quot;);</span>
-<span class="nc" id="L143">        createTableHeaderCell(sink, &quot;Filename&quot;);</span>
-<span class="nc" id="L144">        createTableHeaderCell(sink, &quot;Version&quot;);</span>
-<span class="nc" id="L145">        createTableHeaderCell(sink, &quot;Detection status&quot;);</span>
-<span class="nc" id="L146">        createTableHeaderCell(sink, &quot;Legal status&quot;);</span>
-<span class="nc" id="L147">        createTableHeaderCell(sink, &quot;Archive path&quot;);</span>
-<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (reportConfiguration.isShowDocumentationUrl()) {</span>
-<span class="nc" id="L149">            createTableHeaderCell(sink, &quot;Documentation&quot;);</span>
+<span class="nc" id="L134">        sink.tableRow();</span>
+<span class="nc" id="L135">        createTableHeaderCell(&quot;Type&quot;);</span>
+<span class="nc" id="L136">        createTableHeaderCell(&quot;Filename&quot;);</span>
+<span class="nc" id="L137">        createTableHeaderCell(&quot;Version&quot;);</span>
+<span class="nc" id="L138">        createTableHeaderCell(&quot;Detection status&quot;);</span>
+<span class="nc" id="L139">        createTableHeaderCell(&quot;Legal status&quot;);</span>
+<span class="nc" id="L140">        createTableHeaderCell(&quot;Archive path&quot;);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (reportConfiguration.isShowDocumentationUrl()) {</span>
+<span class="nc" id="L142">            createTableHeaderCell(&quot;Documentation&quot;);</span>
         }
-<span class="nc" id="L151">        createTableHeaderCell(sink, &quot;Licenses&quot;);</span>
-<span class="nc" id="L152">        createTableHeaderCell(sink, &quot;Message Digest (&quot; + outputResult.getMessageDigestAlgorithm() + &quot;)&quot;);</span>
-<span class="nc" id="L153">        sink.tableRow_();</span>
-<span class="nc" id="L154">    }</span>
+<span class="nc" id="L144">        createTableHeaderCell(&quot;Licenses&quot;);</span>
+<span class="nc" id="L145">        createTableHeaderCell(&quot;Message Digest (&quot; + outputResult.getMessageDigestAlgorithm() + &quot;)&quot;);</span>
+<span class="nc" id="L146">        sink.tableRow_();</span>
+<span class="nc" id="L147">    }</span>
 
     private void createTableRow(final Archive archive, final ReportConfiguration reportConfiguration) {
-<span class="nc" id="L157">        sink.tableRow();</span>
+<span class="nc" id="L150">        sink.tableRow();</span>
 
-<span class="nc" id="L159">        createTableCell(archive.getArchiveType().toString());</span>
-<span class="nc" id="L160">        createTableCell(archive.getFileName());</span>
-<span class="nc" id="L161">        createTableCell(archive.getVersion());</span>
-<span class="nc" id="L162">        createTableCell(archive.getDetectionStatus().name());</span>
-<span class="nc" id="L163">        createTableCell(archive.getLegalStatus().name());</span>
-<span class="nc" id="L164">        createTableCell(archive.getPath());</span>
-<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (reportConfiguration.isShowDocumentationUrl()) {</span>
-<span class="nc" id="L166">            final String documentationUrl = archive.getDocumentationUrl();</span>
-<span class="nc" id="L167">            createTableCell(documentationUrl);</span>
+<span class="nc" id="L152">        createTableCell(archive.getArchiveType().toString());</span>
+<span class="nc" id="L153">        createTableCell(archive.getFileName());</span>
+<span class="nc" id="L154">        createTableCell(archive.getVersion());</span>
+<span class="nc" id="L155">        createTableCell(archive.getDetectionStatus().name());</span>
+<span class="nc" id="L156">        createTableCell(archive.getLegalStatus().name());</span>
+<span class="nc" id="L157">        createTableCell(archive.getPath());</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        if (reportConfiguration.isShowDocumentationUrl()) {</span>
+<span class="nc" id="L159">            final String documentationUrl = archive.getDocumentationUrl();</span>
+<span class="nc" id="L160">            createTableCell(documentationUrl);</span>
         }
-<span class="nc" id="L169">        final Set&lt;License&gt; licensesSet = archive.getLicenses();</span>
-<span class="nc" id="L170">        sink.tableCell();</span>
-<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (!licensesSet.isEmpty()) {</span>
+<span class="nc" id="L162">        final Set&lt;License&gt; licensesSet = archive.getLicenses();</span>
+<span class="nc" id="L163">        sink.tableCell();</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (!licensesSet.isEmpty()) {</span>
             // sort by SPDX identifier so that we get a unique order for archives that appear multiple times
-<span class="nc" id="L173">            final List&lt;License&gt; licensesList = new ArrayList&lt;&gt;(licensesSet);</span>
-<span class="nc" id="L174">            Collections.sort(licensesList, new Comparator&lt;License&gt;() { // NOSONAR</span>
+<span class="nc" id="L166">            final List&lt;License&gt; licensesList = new ArrayList&lt;&gt;(licensesSet);</span>
+<span class="nc" id="L167">            Collections.sort(licensesList, new Comparator&lt;License&gt;() { // NOSONAR</span>
 
                 /** {@inheritDoc} */
                 @Override
                 public int compare(final License o1, final License o2) {
-<span class="nc" id="L179">                    return o1.getSpdxIdentifier().compareTo(o2.getSpdxIdentifier());</span>
+<span class="nc" id="L172">                    return o1.getSpdxIdentifier().compareTo(o2.getSpdxIdentifier());</span>
                 }
             });
-<span class="nc" id="L182">            sink.list();</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">            for (final License license : licensesList) {</span>
-<span class="nc" id="L184">                sink.listItem();</span>
-<span class="nc" id="L185">                sink.text(license.getSpdxIdentifier());</span>
-<span class="nc" id="L186">                sink.listItem_();</span>
-<span class="nc" id="L187">            }</span>
-<span class="nc" id="L188">            sink.list_();</span>
+<span class="nc" id="L175">            sink.list();</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">            for (final License license : licensesList) {</span>
+<span class="nc" id="L177">                sink.listItem();</span>
+<span class="nc" id="L178">                sink.text(license.getSpdxIdentifier());</span>
+<span class="nc" id="L179">                sink.listItem_();</span>
+<span class="nc" id="L180">            }</span>
+<span class="nc" id="L181">            sink.list_();</span>
         }
-<span class="nc" id="L190">        sink.tableCell_();</span>
-<span class="nc" id="L191">        createTableCell(archive.getMessageDigestString());</span>
-<span class="nc" id="L192">        sink.tableRow_();</span>
-<span class="nc" id="L193">    }</span>
+<span class="nc" id="L183">        sink.tableCell_();</span>
+<span class="nc" id="L184">        createTableCell(archive.getMessageDigestString());</span>
+<span class="nc" id="L185">        sink.tableRow_();</span>
+<span class="nc" id="L186">    }</span>
 
     /**
-     * @param sink
      * @param text
      */
-    private void createTableHeaderCell(final Sink sink, String text) {
-<span class="nc" id="L200">        sink.tableHeaderCell();</span>
-<span class="nc" id="L201">        sink.text(text);</span>
-<span class="nc" id="L202">        sink.tableHeaderCell_();</span>
-<span class="nc" id="L203">    }</span>
+    private void createTableHeaderCell(String text) {
+<span class="nc" id="L192">        sink.tableHeaderCell();</span>
+<span class="nc" id="L193">        sink.text(text);</span>
+<span class="nc" id="L194">        sink.tableHeaderCell_();</span>
+<span class="nc" id="L195">    }</span>
 
     /**
      * @param text
      */
     private void createTableCell(String text) {
-<span class="nc" id="L209">        sink.tableCell();</span>
-<span class="nc" id="L210">        sink.text(text);</span>
-<span class="nc" id="L211">        sink.tableCell_();</span>
-<span class="nc" id="L212">    }</span>
+<span class="nc" id="L201">        sink.tableCell();</span>
+<span class="nc" id="L202">        sink.text(text);</span>
+<span class="nc" id="L203">        sink.tableCell_();</span>
+<span class="nc" id="L204">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

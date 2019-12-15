@@ -25,28 +25,40 @@ import org.aposin.licensescout.exporter.IReportExporter;
 import org.aposin.licensescout.exporter.TxtExporter;
 
 /**
- * Engine that contains the main control flow of the LicenseScout.
+ * Factory for generating report exporter instances.
+ * 
+ * &lt;p&gt;Supports the following output file types:&lt;/p&gt;
+ * &lt;ul&gt;
+ * &lt;li&gt;{@link OutputFileType#CSV}&lt;/li&gt;
+ * &lt;li&gt;{@link OutputFileType#HTML}&lt;/li&gt;
+ * &lt;li&gt;{@link OutputFileType#TXT}&lt;/li&gt;
+ * &lt;/ul&gt;
  *
  */
-<span class="fc" id="L31">public class StandardReportExporterFactory implements IReportExporterFactory  {</span>
+<span class="fc" id="L38">public class StandardReportExporterFactory implements IReportExporterFactory {</span>
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List&lt;OutputFileType&gt; getSupportedOutputFileTypes()
-    {
-<span class="fc" id="L36">        return Arrays.asList(OutputFileType.CSV, OutputFileType.HTML,OutputFileType.TXT);</span>
+    public List&lt;OutputFileType&gt; getSupportedOutputFileTypes() {
+<span class="fc" id="L45">        return Arrays.asList(OutputFileType.CSV, OutputFileType.HTML, OutputFileType.TXT);</span>
     }
- 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IReportExporter getReportExporter(final OutputFileType outputFileType) {
-<span class="fc bfc" id="L41" title="All 4 branches covered.">        switch (outputFileType) {</span>
+<span class="fc bfc" id="L53" title="All 4 branches covered.">        switch (outputFileType) {</span>
             case CSV:
-<span class="fc" id="L43">                return CsvExporter.getInstance();</span>
+<span class="fc" id="L55">                return CsvExporter.getInstance();</span>
             case HTML:
-<span class="fc" id="L45">                return HtmlExporter.getInstance();</span>
+<span class="fc" id="L57">                return HtmlExporter.getInstance();</span>
             case TXT:
-<span class="fc" id="L47">                return TxtExporter.getInstance();</span>
+<span class="fc" id="L59">                return TxtExporter.getInstance();</span>
             default:
-<span class="fc" id="L49">                throw new IllegalArgumentException(&quot;Unhandled OutputFileType: &quot; + outputFileType);</span>
+<span class="fc" id="L61">                throw new IllegalArgumentException(&quot;Unhandled OutputFileType: &quot; + outputFileType);</span>
         }
     }
 
