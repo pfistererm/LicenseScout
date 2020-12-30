@@ -7,6 +7,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/aposin/LicenseScout.svg)
 [![CLA assistant](https://cla-assistant.io/readme/badge/aposin/LicenseScout)](https://cla-assistant.io/aposin/LicenseScout)
 [![GitHub](https://img.shields.io/github/license/aposin/LicenseScout.svg)](https://github.com/aposin/LicenseScout/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpfistererm%2FLicenseScout.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpfistererm%2FLicenseScout?ref=badge_shield)
 
 ---
 
@@ -58,6 +59,9 @@ Have a look at the `pom.xml` in `org.aposin.licensescout.licensereport`. It cont
 You may want to start by re-using this project and just alter the parameter `scanDirectory` (Note: the value may also be an absolute path that points anywhere in the file system).
 
 Alternatively, you can copy out the plugin configurations and take them over to your own project's POM.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpfistererm%2FLicenseScout.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpfistererm%2FLicenseScout?ref=badge_large)
 
 #### Create a project specific configuration
 
@@ -113,4 +117,4 @@ See also the [Contributors](https://github.com/aposin/LicenseScout/graphs/contri
 
 ## License
 
-This project is under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.  
+This project is under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
